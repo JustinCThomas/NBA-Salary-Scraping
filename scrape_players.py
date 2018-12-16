@@ -10,8 +10,10 @@ soup = BeautifulSoup(content, "html.parser")
 player_table = soup.find(id="player-contracts")
 player_rows = player_table.find("tbody").find_all("tr", {"data-row": ""})
 
-player_link = player_rows[0].find("a")
 
-print(player_link)
+for i in player_rows:
+    if i.find("a") == None:
+        continue
 
-# while True:
+    player_link = i.find("a")
+    print(player_link)
