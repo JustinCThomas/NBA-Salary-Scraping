@@ -1,5 +1,4 @@
 import requests
-# import re
 from bs4 import BeautifulSoup, Comment
 from time import sleep
 
@@ -11,13 +10,6 @@ soup = BeautifulSoup(content, "html.parser")
 player_table = soup.find(id="player-contracts")
 player_rows = player_table.find("tbody").find_all("tr", {"data-row": ""})
 
-
-# for i in player_rows:
-#     if i.find("a") == None:
-#         continue
-#
-#     player_link = i.find("a")
-#     print(player_link)
 
 def search_players(amount=100):
     for i in player_rows:
@@ -37,17 +29,14 @@ def search_players(amount=100):
         comment_soup = BeautifulSoup(comments, "html.parser")
 
         salary_table = comment_soup.find(id="all_salaries")
-
-    
         salaries = salary_table.find("tbody").find_all("tr", {"data-row": ""})
-        print(salaries)
 
         for i in salaries:
             season = i.find("th").get_text()
-            salary = i.find(_class="right")["csk"]
+            salary = i.find_all("td")[2]["csk"]
+            
+            print("Season: {} Salary: ${:,}".format(season, int(salary)))
 
-            print("Season: %s Salary: %s" % (season, salary))
-        print(soup)
         # remove later
         break
         amount -= 1
