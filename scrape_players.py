@@ -32,8 +32,8 @@ def search_players(amount=100):
         salary_table = comment_soup.find(id="all_salaries")
         salaries = salary_table.find("tbody").find_all("tr", {"data-row": ""})
 
+        print("Scraping Player %s...\n" % player_name)
         for i in salaries:
-            print("Scraping Player " + player_name)
             season = i.find("th").get_text()
             team = i.find_all("td")[0].find("a").get_text()
             if season[0] != "2":
@@ -44,9 +44,6 @@ def search_players(amount=100):
         print()
         sleep(1)
 
-
-        # remove later
-        # break
         amount -= 1
 
 if __name__ == "__main__":
