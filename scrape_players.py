@@ -19,6 +19,7 @@ def search_players(amount=100):
             continue
 
         player_link = i.find("a")['href']
+        player_name = i.find("a").get_text()
 
         req = requests.get(base_url + player_link)
         content = req.content
@@ -32,13 +33,20 @@ def search_players(amount=100):
         salaries = salary_table.find("tbody").find_all("tr", {"data-row": ""})
 
         for i in salaries:
+            print("Scraping Player " + player_name)
             season = i.find("th").get_text()
+            team = i.find_all("td")[0].find("a").get_text()
+            if season[0] != "2":
+                continue
             salary = i.find_all("td")[2]["csk"]
-            
-            print("Season: {} Salary: ${:,}".format(season, int(salary)))
+
+            print("Player: {} Team: {} Season: {}   Salary: ${:,}".format(player_name, team, season, int(salary)))
+        print()
+        sleep(1)
+
 
         # remove later
-        break
+        # break
         amount -= 1
 
 if __name__ == "__main__":
