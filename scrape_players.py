@@ -12,10 +12,14 @@ player_rows = player_table.find("tbody").find_all("tr", {"data-row": ""})
 
 
 def search_players(amount=100):
+    players_scraped = 0
+    data_row = 0
+    # f = open("nba_players.csv", "w")
     for i in player_rows:
-        if amount <= 0:
+        if players_scraped >= amount:
             break
         if i.find("a") == None:
+            data_row += 1
             continue
 
         player_link = i.find("a")['href']
@@ -40,11 +44,24 @@ def search_players(amount=100):
                 continue
             salary = i.find_all("td")[2]["csk"]
 
-            print("Player: {} Team: {} Season: {}   Salary: ${:,}".format(player_name, team, season, int(salary)))
+            print("Player: {} Team: {} Season: {} Salary: ${:,}".format(player_name, team, season, int(salary)))
+            # season_stats = "{}, {}, {}, ${}\n".format(player_name, team, season, int(salary))
+            # f.write(season_stats)
+
+        # current_team = player_rows.find("tr")
+        # .find("a").get_text()
+        # current_team = player_table.find("tbody").find("tr").find_all("td", {"data-stat": "team_id"})[0]
+        # current_team = player_table.find("tbody").find("tr")
+        # print(current_team)
+        # current_season = soup.title.get_text()[:7]
+        # current_salary = player_rows.find_all("td", {"data-stat": "y1"})[0]["csk"]
+        # print("Player: {} Team: {} Season: {} Salary: ${:,}".format(player_name, current_team, current_season, int(current_salary)))
+
         print()
         sleep(1)
 
-        amount -= 1
+        players_scraped += 1
+        data_row += 1
 
 if __name__ == "__main__":
     search_players()
